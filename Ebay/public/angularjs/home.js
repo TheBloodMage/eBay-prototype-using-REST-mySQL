@@ -56,12 +56,21 @@ app.config(function($routeProvider) {
 		templateUrl : "templates/register.html",
 		controller : "registerController"
 	})
+	
+	.when("/update", {
+		templateUrl : "templates/update.html",
+		controller : "updateController"
+	})
 
 	.when("/login", {
 		templateUrl : "templates/login.html",
 		controller : "loginController"
 	});
 
+});
+
+app.controller("updateController", function($scope) {
+	console.log("I am in updateController");
 });
 
 app.controller("creditController", function($scope) {
@@ -121,7 +130,7 @@ app.controller('cart', function($scope, $http) {
 
 			if (data.statusCode == 200) {
 				console.log("Added TO CArt");
-				//console.log(data);
+				// console.log(data);
 			} else {
 				console.log("SOMETHING WENT WRONG");
 			}
@@ -130,9 +139,10 @@ app.controller('cart', function($scope, $http) {
 
 	$scope.money = function(data) {
 		var BoughtDetails = {
-			"pid" : data
+			"pid" : data,
+			"card_number" : $scope.card_number
 		}
-		console.log("hi inside bought details" + BoughtDetails);
+		console.log("hi123 inside bought details" + BoughtDetails);
 		$http({
 			method : "POST",
 			url : '/money',
@@ -160,7 +170,7 @@ app.controller('cart', function($scope, $http) {
 
 			if (data.statusCode == 200) {
 				console.log("REMOVED FROM CART");
-				//console.log(data);
+				// console.log(data);
 			} else {
 				console.log("SOMETHING WENT WRONG");
 			}
@@ -180,7 +190,7 @@ app.controller('cart', function($scope, $http) {
 
 			if (data.statusCode == 200) {
 				console.log("REMOVED FROM CART");
-				//console.log(data);
+				// console.log(data);
 			} else {
 				console.log("SOMETHING WENT WRONG");
 			}
@@ -204,7 +214,7 @@ app.controller("BroughtProductsController", function($scope, $http) {
 });
 
 app.controller("buyController", function($scope, $http) {
-	console.log("I am in profileController");
+	console.log("I am in buyController");
 
 	$http({
 		method : "get",
@@ -276,10 +286,11 @@ app.controller('register', function($scope, $http) {
 
 	$scope.submitAd = function() {
 		var ProductDetails = {
-			"product_id" : $scope.product_id,
-			"product_name" : $scope.product_name,
-			"product_desc" : $scope.product_desc,
-			"product_price" : $scope.product_price
+			"product_id" 	: $scope.product_id,
+			"product_name" 	: $scope.product_name,
+			"product_desc" 	: $scope.product_desc,
+			"product_price" : $scope.product_price,
+			"tot_product" 	: $scope.tot_product
 		}
 		console.log(ProductDetails);
 		$http({
@@ -292,6 +303,30 @@ app.controller('register', function($scope, $http) {
 				console.log("invalid entry received");
 			} else {
 				console.log("record inserted");
+			}
+		})
+	}
+	
+	$scope.updateProfile = function() {
+		var ProfileDetails = {
+			"first_name" 	: $scope.first_name,
+			"last_name" 	: $scope.last_name,
+			"bday" 			: $scope.bday,
+			"euname" 		: $scope.euname,
+			"cinfo" 		: $scope.cinfo,
+			"location" 		: $scope.location
+		}
+		console.log(ProfileDetails);
+		$http({
+			method : "POST",
+			url : '/updateProfile',
+			data : ProfileDetails
+		}).success(function(data) {
+
+			if (data.statusCode == 200) {
+				console.log("invalid entry received");
+			} else {
+				console.log("profile updated");
 			}
 		})
 	}
@@ -314,7 +349,7 @@ app.controller('ebay', function($scope, $http) {
 
 			if (data.statusCode == 200) {
 				console.log("Login Page should be ther in the DIV bootstrap");
-				//console.log(data);
+				// console.log(data);
 				window.location.assign("/successLogin");
 			} else {
 				console.log("Invalid LogIn Message");
@@ -331,7 +366,7 @@ app.controller('ebay', function($scope, $http) {
 
 			}
 		}).success(function(data) {
-			//console.log(data.users);
+			// console.log(data.users);
 			window.location.assign("/getAllProducts");
 		}).error(function(error) {
 

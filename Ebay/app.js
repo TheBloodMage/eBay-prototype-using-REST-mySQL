@@ -50,6 +50,7 @@ app.get('/calculate', home.calculate)
 app.post('/afterSignIn', home.afterSignIn);
 app.post('/registerNewUser', home.registerNewUser);
 app.post('/submitAd', home.submitAd);
+app.post('/updateProfile', home.updateProfile);
 app.post('/money', home.money);
 app.post('/logout', home.logout);
 app.post('/cart', home.cart);

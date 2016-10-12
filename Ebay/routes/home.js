@@ -1,6 +1,6 @@
-var ejs 	= require("ejs");
-var mysql	= require('./mysql');
-var bcrypt 	= require('bcrypt');
+var ejs = require("ejs");
+var mysql = require('./mysql');
+var bcrypt = require('bcrypt');
 
 function signin(req, res) {
 
@@ -32,24 +32,28 @@ function afterSignIn(req, res) {
 			throw err;
 		} else {
 			if (results.length > 0) {
-				
+
 				var hash = results[0].password;
 				var myPlaintextPassword = req.param("inputPassword");
-				
+
 				console.log(hash);
 
 				if (bcrypt.compareSync(myPlaintextPassword, hash)) {
-					
+
 					req.session.username = req.param("inputUsername");
-					
+
 					console.log("Valid Login--User Session initialized");
-					
-					json_responses = {"statusCode" : 200};
+
+					json_responses = {
+						"statusCode" : 200
+					};
 					res.send(json_responses);
 				}
 			} else {
 
-				json_responses = {"statusCode" : 401};
+				json_responses = {
+					"statusCode" : 401
+				};
 				console.log("Invalid Login");
 				res.send(json_responses);
 
@@ -82,18 +86,23 @@ function registerNewUser(req, res) {
 			if (results.length > 0) {
 
 				console.log("Record NOT inserted!");
-				json_responses = {"statusCode" : 200};
+				json_responses = {
+					"statusCode" : 200
+				};
 				res.send(json_responses);
 
 			} else {
 
 				console.log("Record Inserted");
-				json_responses = {"statusCode" : 401};
+				json_responses = {
+					"statusCode" : 401
+				};
 				res.send(json_responses);
 
 			}
 		}
 	}, insertUser);
+
 }
 
 exports.submitAd = function(req, res) {
@@ -101,7 +110,8 @@ exports.submitAd = function(req, res) {
 	var insertUser = "INSERT INTO products VALUES ('"
 			+ req.param("product_name") + "','" + req.param("product_id")
 			+ "','" + req.param("product_price") + "','"
-			+ req.param("product_desc") + "','" + req.session.username + "')";
+			+ req.param("product_desc") + "','" + req.session.username + "','"
+			+ req.param("tot_product") + "')";
 
 	console.log("QUERY to submit an AD is:" + insertUser);
 
@@ -113,18 +123,93 @@ exports.submitAd = function(req, res) {
 			if (results.length > 0) {
 
 				console.log("AD NOT inserted!");
-				json_responses = {"statusCode" : 200};
+				json_responses = {
+					"statusCode" : 200
+				};
 				res.send(json_responses);
 
 			} else {
 
 				console.log("AD Inserted");
-				json_responses = {"statusCode" : 401};
+				json_responses = {
+					"statusCode" : 401
+				};
 				res.send(json_responses);
 
 			}
 		}
 	}, insertUser);
+}
+
+exports.updateProfile = function(req, res) {
+
+	/*
+	 * var profileQuery = "INSERT INTO profile VALUES ('" + req.session.username +
+	 * "','" + req.param("bday") + "','" + req.param("euname") + "','" +
+	 * req.param("cinfo") + "','" + req.param("location") + "')";
+	 */
+
+	var profileQuery = "update profile set birthday = '" + req.param("bday")
+			+ "', ebayhandle= '" + req.param("euname") + "', contactinfo= '"
+			+ req.param("cinfo") + "', location= '" + req.param("location")
+			+ "' where username = '" + req.session.username + "'";
+
+	var userQuery = "update users set fname = '" + req.param("first_name")
+			+ "', lname= '" + req.param("last_name") + "' where username = '"
+			+ req.session.username + "'";
+
+	console.log("QUERY to modify table PROFILE is::" + profileQuery);
+	console.log("QUERY to modify table USER is::" + userQuery);
+
+	mysql.fetchData(function(err, results) {
+
+		if (err) {
+			throw err;
+		} else {
+			if (results.length > 0) {
+
+				console.log("PROFILE UPDATE FAIL!");
+				json_responses = {
+					"statusCode" : 200
+				};
+				res.send(json_responses);
+
+			} else {
+
+				console.log("PROFILE UPDATE SUCCESS");
+				json_responses = {
+					"statusCode" : 401
+				};
+				res.send(json_responses);
+
+			}
+		}
+	}, profileQuery);
+
+	mysql.fetchData(function(err, results) {
+
+		if (err) {
+			throw err;
+		} else {
+			if (results.length > 0) {
+
+				console.log("USER UPDATE FAIL!");
+				json_responses = {
+					"statusCode" : 200
+				};
+				res.send(json_responses);
+
+			} else {
+
+				console.log("USER UPDATE SUCCESS");
+				json_responses = {
+					"statusCode" : 401
+				};
+				res.send(json_responses);
+
+			}
+		}
+	}, userQuery);
 }
 
 exports.money = function(req, res) {
@@ -137,15 +222,16 @@ exports.money = function(req, res) {
 	var cartQuery = "DELETE FROM test.cart WHERE username = '"
 			+ req.session.username + "'";
 
-	var productQuery = "delete from products where  pid in (select pid from bought)";
-	
-	var getTotal = "select sum(pprize) tot from products p, cart c where p.pid = c.pid and c.username = '"
-		+ req.session.username + "'";
+	var productQuery = "delete from products where  totprod = 0";
+
+	var updateTotProducts = "update products set totprod = totprod - 1 where totprod <> 0 "
+			+ "and pid in ( select pid from cart where username = '"
+			+ req.session.username + "')";
 
 	console.log("QUERY for bought item is:" + boughtItem);
 	console.log("QUERY for cart deletion:" + cartQuery);
 	console.log("QUERY for product deletion:" + productQuery);
-	console.log("Query to calculate total prize of cart:" + getTotal);
+	console.log("Query to calculate total prize of cart:" + updateTotProducts);
 
 	mysql.fetchData(function(err, results) {
 
@@ -154,22 +240,26 @@ exports.money = function(req, res) {
 		} else {
 			if (results.length > 0) {
 
-				console.log("getTotal fail!");
-				//var hash = results[0].password;
+				console.log("updateTotProducts fail!");
+				// var hash = results[0].password;
 				console.log(results);
-				json_responses = {"statusCode" : 200};
+				json_responses = {
+					"statusCode" : 200
+				};
 				res.send(json_responses);
 
 			} else {
 
-				console.log("getTotal success!");
-				json_responses = {"statusCode" : 401};
+				console.log("updateTotProducts success!");
+				json_responses = {
+					"statusCode" : 401
+				};
 				res.send(json_responses);
 
 			}
 		}
-	}, getTotal);
-	
+	}, updateTotProducts);
+
 	mysql.fetchData(function(err, results) {
 
 		if (err) {
@@ -178,13 +268,17 @@ exports.money = function(req, res) {
 			if (results.length > 0) {
 
 				console.log("boughtItem fail!");
-				json_responses = {"statusCode" : 200};
+				json_responses = {
+					"statusCode" : 200
+				};
 				res.send(json_responses);
 
 			} else {
 
 				console.log("boughtItem success!");
-				json_responses = {"statusCode" : 401};
+				json_responses = {
+					"statusCode" : 401
+				};
 				res.send(json_responses);
 
 			}
@@ -224,20 +318,23 @@ exports.money = function(req, res) {
 			if (results.length > 0) {
 
 				console.log("productQuery fail!");
-				json_responses = {"statusCode" : 200};
+				json_responses = {
+					"statusCode" : 200
+				};
 				res.send(json_responses);
 
 			} else {
 
 				console.log("productQuery success!");
-				json_responses = {"statusCode" : 401};
+				json_responses = {
+					"statusCode" : 401
+				};
 				res.send(json_responses);
 
 			}
 		}
 	}, productQuery);
 }
-
 
 function getAllProducts(req, res) {
 
@@ -256,7 +353,9 @@ function getAllProducts(req, res) {
 
 				var rows = results;
 				console.log(rows);
-				json_response = {"products" : rows};
+				json_response = {
+					"products" : rows
+				};
 				res.send(json_response);
 
 			} else {
@@ -282,7 +381,9 @@ exports.getAllBoughtProducts = function(req, res) {
 
 				var rows = results;
 				console.log(rows);
-				json_response = {"BoughtProducts" : rows};
+				json_response = {
+					"BoughtProducts" : rows
+				};
 				res.send(json_response);
 			} else {
 
@@ -292,16 +393,19 @@ exports.getAllBoughtProducts = function(req, res) {
 	}, getAllUsers);
 }
 
-
 exports.redirectToHomepage = function(req, res) {
 
-	console.log("ME: "+req.session.username);
-	
+	console.log("ME: " + req.session.username);
+
 	if (req.session.username) {
-		res.header('Cache-Control','no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-		res.render("successLogin", {username : req.session.username});
-	} 
-	else{
+		res
+				.header(
+						'Cache-Control',
+						'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+		res.render("successLogin", {
+			username : req.session.username
+		});
+	} else {
 		res.redirect('/');
 	}
 };
@@ -314,10 +418,11 @@ exports.logout = function(req, res) {
 
 exports.profile = function(req, res) {
 
-	var getAllUsers = "select * from users where username = '"
+	var getAllUsers = "select * from users u, profile p where u.username = '"
 			+ req.session.username + "'";
-	console.log("PROFILE QUERY IS:" + getAllUsers);
-	
+
+	console.log("USERS QUERY IS:" + getAllUsers);
+
 	var json_response;
 
 	mysql.fetchData(function(err, results) {
@@ -328,15 +433,18 @@ exports.profile = function(req, res) {
 
 				var rows = results;
 				console.log(rows);
-				json_response = {"users" : rows};
+				json_response = {
+					"users" : rows
+				};
 				res.send(json_response);
-				
+
 			} else {
 
 				console.log("No users found in database");
 			}
 		}
 	}, getAllUsers);
+
 }
 
 exports.cart = function(req, res) {
@@ -354,13 +462,17 @@ exports.cart = function(req, res) {
 			if (results.length > 0) {
 
 				console.log("CART FAIL!");
-				json_responses = {"statusCode" : 200};
+				json_responses = {
+					"statusCode" : 200
+				};
 				res.send(json_responses);
 
 			} else {
 
 				console.log("CART SUCCSS!");
-				json_responses = {"statusCode" : 401};
+				json_responses = {
+					"statusCode" : 401
+				};
 				res.send(json_responses);
 
 			}
@@ -384,9 +496,11 @@ exports.yourCart = function(req, res) {
 
 				var rows = results;
 				console.log(rows);
-				json_response = {"carts" : rows};
+				json_response = {
+					"carts" : rows
+				};
 				res.send(json_response);
-				
+
 			} else {
 				console.log("No item found in cart");
 			}
@@ -410,9 +524,11 @@ exports.yourAd = function(req, res) {
 
 				var rows = results;
 				console.log(rows);
-				json_response = {"ads" : rows};
+				json_response = {
+					"ads" : rows
+				};
 				res.send(json_response);
-				
+
 			} else {
 				console.log("No ADs under your name");
 			}
@@ -435,13 +551,17 @@ exports.removeCart = function(req, res) {
 			if (results.length > 0) {
 
 				console.log("CART deletion fail!");
-				json_responses = {"statusCode" : 200};
+				json_responses = {
+					"statusCode" : 200
+				};
 				res.send(json_responses);
 
 			} else {
 
 				console.log("CART deletion success!");
-				json_responses = {"statusCode" : 401};
+				json_responses = {
+					"statusCode" : 401
+				};
 				res.send(json_responses);
 
 			}
@@ -464,20 +584,23 @@ exports.removeAd = function(req, res) {
 			if (results.length > 0) {
 
 				console.log("AD deletion fail!");
-				json_responses = {"statusCode" : 200};
+				json_responses = {
+					"statusCode" : 200
+				};
 				res.send(json_responses);
 
 			} else {
 
 				console.log("AD deletion success!");
-				json_responses = {"statusCode" : 401};
+				json_responses = {
+					"statusCode" : 401
+				};
 				res.send(json_responses);
 
 			}
 		}
 	}, insertUser);
 }
-
 
 exports.calculate = function(req, res) {
 
@@ -495,7 +618,9 @@ exports.calculate = function(req, res) {
 
 				var rows = results;
 				console.log("hii:::@" + results[0].pid);
-				json_response = {"total" : rows};
+				json_response = {
+					"total" : rows
+				};
 				res.send(json_response);
 
 			} else {
