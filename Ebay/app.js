@@ -11,19 +11,14 @@ saltRounds = 10;
 
 var app = express();
 
-// all environments
-// configure the sessions with our application
 app.use(session({
 
 	cookieName : 'session',
 	secret : 'ebay_273',
-	duration : 30 * 60 * 1000, // setting the time for active session
+	duration : 30 * 60 * 1000, 
 	activeDuration : 5 * 60 * 1000,
 }));
-// setting time for the session to be active when the window is open // 5
-// minutes set currently
 
-// all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -34,10 +29,9 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(express.bodyParser());
 app.use(express.cookieParser());
 
-// development only
+
 if ('development' == app.get('env')) {
 	app.use(express.errorHandler());
 }

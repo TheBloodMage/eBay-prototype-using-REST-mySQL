@@ -16,37 +16,37 @@ app.config(function($routeProvider) {
 		templateUrl : "templates/yourAd.html",
 		controller : "checkController"
 	})
-	
+
 	.when("/sell", {
 		templateUrl : "templates/sell.html",
 		controller : "sellController"
 	})
-	
+
 	.when("/cart", {
 		templateUrl : "templates/cart.html",
 		controller : "cartController"
 	})
-	
+
 	.when("/buy", {
 		templateUrl : "templates/products.html",
 		controller : "buyController"
 	})
-	
+
 	.when("/history", {
 		templateUrl : "templates/BroughtProducts.html",
 		controller : "BroughtProductsController"
 	})
-	
+
 	.when("/profile", {
 		templateUrl : "templates/getAllUsers.html",
 		controller : "profileController"
 	})
-	
+
 	.when("/payment", {
 		templateUrl : "templates/payment.html",
 		controller : "paymentController"
 	})
-	
+
 	.when("/pay", {
 		templateUrl : "templates/creditCard.html",
 		controller : "creditController"
@@ -64,16 +64,13 @@ app.config(function($routeProvider) {
 
 });
 
-
 app.controller("creditController", function($scope) {
 	console.log("I am in creditController");
 });
 
-
 app.controller("paymentController", function($scope) {
 	console.log("I am in paymentController");
 });
-
 
 app.controller("sellController", function($scope) {
 	console.log("I am in sellController");
@@ -81,37 +78,36 @@ app.controller("sellController", function($scope) {
 
 app.controller("checkController", function($scope, $http) {
 	console.log("I am in checkController");
-	
+
 	$http({
-		method:"get",
-		url:'/yourAd',
-		data:{}
-	}).success(function(data){
+		method : "get",
+		url : '/yourAd',
+		data : {}
+	}).success(function(data) {
 		console.log(data);
 		$scope.ads = data.ads;
-	}).error(function(error){
-	
-});
+	}).error(function(error) {
+
+	});
 });
 
 app.controller("cartController", function($scope, $http) {
 	console.log("I am in cartController");
-	
+
 	$http({
-		method:"get",
-		url:'/yourCart',
-		data:{}
-	}).success(function(data){
+		method : "get",
+		url : '/yourCart',
+		data : {}
+	}).success(function(data) {
 		console.log(data);
 		$scope.carts = data.carts;
-	}).error(function(error){
-	
-});
-});
+	}).error(function(error) {
 
+	});
+});
 
 app.controller('cart', function($scope, $http) {
-	
+
 	$scope.addToCart = function(data) {
 		var credentials = {
 			"pid" : data
@@ -131,12 +127,12 @@ app.controller('cart', function($scope, $http) {
 			}
 		})
 	}
-	
+
 	$scope.money = function(data) {
 		var BoughtDetails = {
-			"pid" 			: data
+			"pid" : data
 		}
-		console.log("hi inside bought details"+BoughtDetails);
+		console.log("hi inside bought details" + BoughtDetails);
 		$http({
 			method : "POST",
 			url : '/money',
@@ -150,12 +146,12 @@ app.controller('cart', function($scope, $http) {
 			}
 		})
 	}
-	
+
 	$scope.removeFromCart = function(data) {
 		var credentials = {
 			"pid" : data
 		}
-		console.log("removeFromCart"+credentials);
+		console.log("removeFromCart" + credentials);
 		$http({
 			method : "POST",
 			url : '/removeCart',
@@ -170,21 +166,7 @@ app.controller('cart', function($scope, $http) {
 			}
 		})
 	}
-	
-	$scope.calculate = function() {
-		$http({
-			method:"get",
-			url:'/calculate',
-			data:{}
-		}).success(function(data){
-			console.log("hi:"+data);
-			$scope.totals = data.total;
-		}).error(function(error){
-		
-	});
-	}
-	
-	
+
 	$scope.removeAD = function(data) {
 		var credentials = {
 			"pid" : data
@@ -208,48 +190,48 @@ app.controller('cart', function($scope, $http) {
 
 app.controller("BroughtProductsController", function($scope, $http) {
 	console.log("I am in BroughtProductsController");
-	
+
 	$http({
-		method:"get",
-		url:'/getAllBoughtProducts',
-		data:{}
-	}).success(function(data){
+		method : "get",
+		url : '/getAllBoughtProducts',
+		data : {}
+	}).success(function(data) {
 		console.log(data);
 		$scope.BoughtProducts = data.BoughtProducts;
-	}).error(function(error){
-	
-});
+	}).error(function(error) {
+
+	});
 });
 
 app.controller("buyController", function($scope, $http) {
 	console.log("I am in profileController");
-	
+
 	$http({
-		method:"get",
-		url:'/getAllProducts',
-		data:{}
-	}).success(function(data){
+		method : "get",
+		url : '/getAllProducts',
+		data : {}
+	}).success(function(data) {
 		console.log(data);
 		$scope.products = data.products;
-	}).error(function(error){
-	
-});
+	}).error(function(error) {
+
+	});
 });
 
 app.controller("profileController", function($scope, $http) {
 	console.log("I am in profileController");
-	
+
 	$http({
-		method:"get",
-		url:'/profile',
-		data:{}
-	}).success(function(data){
+		method : "get",
+		url : '/profile',
+		data : {}
+	}).success(function(data) {
 		console.log(data);
 		$scope.results = data.users;
-	}).error(function(error){
-	
-});
-	
+	}).error(function(error) {
+
+	});
+
 });
 
 app.controller("registerController", function($scope) {
@@ -269,13 +251,11 @@ app.controller("loginController", function($scope) {
 app.controller('register', function($scope, $http) {
 	console.log("I am in ANGULAR function register");
 
-	
 	$scope.register = function() {
 
-		
 		var RegisterCredentials = {
-			"first_name" 	: $scope.first_name,
-			"last_name" 	: $scope.last_name,
+			"first_name" : $scope.first_name,
+			"last_name" : $scope.last_name,
 			"inputUsername" : $scope.inputUsername,
 			"inputPassword" : $scope.inputPassword
 		}
@@ -293,12 +273,12 @@ app.controller('register', function($scope, $http) {
 			}
 		})
 	}
-	
+
 	$scope.submitAd = function() {
 		var ProductDetails = {
-			"product_id" 	: $scope.product_id,
-			"product_name" 	: $scope.product_name,
-			"product_desc" 	: $scope.product_desc,
+			"product_id" : $scope.product_id,
+			"product_name" : $scope.product_name,
+			"product_desc" : $scope.product_desc,
 			"product_price" : $scope.product_price
 		}
 		console.log(ProductDetails);
@@ -316,7 +296,6 @@ app.controller('register', function($scope, $http) {
 		})
 	}
 })
-
 
 app.controller('ebay', function($scope, $http) {
 	console.log("I am in ANGULAR");
@@ -342,24 +321,21 @@ app.controller('ebay', function($scope, $http) {
 			}
 		})
 	}
-	
-	$scope.getAllProducts=function(){
+
+	$scope.getAllProducts = function() {
 		console.log("hey call is here");
 		$http({
-			method:"get",
-			url:'/getAllProducts',
-			data:{
-				
+			method : "get",
+			url : '/getAllProducts',
+			data : {
+
 			}
-			}).success(function(data){
-				//console.log(data.users);
-				window.location.assign("/getAllProducts");
-			}).error(function(error){
-			
-	});
-};
+		}).success(function(data) {
+			//console.log(data.users);
+			window.location.assign("/getAllProducts");
+		}).error(function(error) {
+
+		});
+	};
 
 });
-
-
-
