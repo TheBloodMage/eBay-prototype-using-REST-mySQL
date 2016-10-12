@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>Dashboard Template for Bootstrap</title>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
+	
+</script>
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets/dashboard.css" rel="stylesheet">
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js">
+</script>
+<script
+	src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js">	
+</script>
+    <script src="angularjs/home.js"></script>
+</head>
+
+<body ng-app="ebay" ng-controller="ebay">
+
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">EBAY PERSONAL DASHBOARD</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#profile" >Profile</a></li>
+					<li><a href="#/settings">Settings</a></li>
+					<li>
+						<form action="logout" method="post">
+						<button name="logout" ng-click="logout()" type="submit"
+											class="btn btn-primary">Log OUT
+						</button>
+						</form>
+					</li>
+				</ul>
+				<form class="navbar-form navbar-right">
+					<input type="text" class="form-control" placeholder="Search...">
+				</form>
+			</div>
+		</div>
+	</nav>
+	
+		<div id="main">
+
+		<!-- angular templating -->
+		<!-- this is where content will be injected -->
+		<div ng-view></div>
+
+		</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li class="active"><a href="#buy">Buy From All Users <span
+							class="sr-only">(current)</span></a></li>
+					<li><a href="#sell">SUBMIT your AD</a></li>
+					<li><a href="#history">History Of Your Purchases!</a></li>
+					<li><a href="#cart">Your Current CART</a></li>
+				</ul>
+				<ul class="nav nav-sidebar">
+					<li><a href="#check">Check Your Advertisements</a></li>
+				</ul>
+				<ul class="nav nav-sidebar">
+					<li><a href="">Future Place Two</a></li>
+				</ul>
+			</div>
+	</div>
+	</div>
+
+
+</body>
+</html>

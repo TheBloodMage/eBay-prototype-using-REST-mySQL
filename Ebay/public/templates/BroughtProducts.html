@@ -1,0 +1,19 @@
+<div class="item  col-xs-4 col-lg-4 div-align" ng-controller="cart">
+	<div>
+		<table class="table">
+			<tr>
+				<th>PRODUCT NAME</th>
+				<th>PRODUCT ID</th>
+				<th>PRODUCT PRICE</th>
+				<th>PRODUCT DESCRIPTION</th>
+			</tr>
+			<tr ng-repeat="BoughtProduct in BoughtProducts">
+				<td>{{BoughtProduct.pname}}</td>
+				<td>{{BoughtProduct.pid}}</td>
+				<td>{{BoughtProduct.pprize}}</td>
+				<td>{{BoughtProduct.pdesc}}</td>
+			</tr>
+		</table>
+
+	</div>
+</div>

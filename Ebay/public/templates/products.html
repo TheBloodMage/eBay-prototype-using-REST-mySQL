@@ -1,0 +1,22 @@
+<div class="item  col-xs-4 col-lg-4 div-align" ng-controller="cart">
+	<div>
+		<table class="table">
+			<tr>
+				<th>PRODUCT NAME</th>
+				<th>PRODUCT ID</th>
+				<th>PRODUCT PRICE</th>
+				<th>PRODUCT DESCRIPTION</th>
+				<th>ADD TO CART</th>
+			</tr>
+			<tr ng-repeat="product in products">
+				<td>{{product.pname}}</td>
+				<td>{{product.pid}}</td>
+				<td>{{product.pprize}}</td>
+				<td>{{product.pdesc}}</td>
+				<td><button name="ADD TO CART" ng-click="addToCart(product.pid)" type="submit"
+											class="btn btn-primary">ADD TO CART</button></td>
+			</tr>
+		</table>
+
+	</div>
+</div>
