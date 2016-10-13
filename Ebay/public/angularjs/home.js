@@ -5,6 +5,8 @@
 // create the module and name it ebay
 var app = angular.module('ebay', [ 'ngRoute' ]);
 
+var myapp = angular.module('test', ['angulartics', 'angulartics.google.analytics']);
+
 console.log("I am in ANGULAR");
 
 // configure our routes
