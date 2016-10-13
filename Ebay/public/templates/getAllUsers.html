@@ -1,4 +1,4 @@
-<div class="item  col-xs-4 col-lg-4 div-align">
+<div style="background-image: url(/images/shopping.jpg);" class="item  div-align">
 	<div>
 	<table class="table">
 	<tr>
@@ -16,6 +16,8 @@
 		</th>
 		<th>LOCATION
 		</th>
+		<th>LAST LOGIN TIME
+		</th>
 	</tr>
 	<tr ng-repeat="result in results">
 		<td>{{result.username}}
@@ -31,6 +33,8 @@
 		<td>{{result.contactinfo}}
 		</td>
 		<td>{{result.location}}
+		</td>
+		<td>{{result.logintime}}
 		</td>
 	</tr>
 </table>

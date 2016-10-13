@@ -56,7 +56,7 @@ app.config(function($routeProvider) {
 		templateUrl : "templates/register.html",
 		controller : "registerController"
 	})
-	
+
 	.when("/update", {
 		templateUrl : "templates/update.html",
 		controller : "updateController"
@@ -286,11 +286,11 @@ app.controller('register', function($scope, $http) {
 
 	$scope.submitAd = function() {
 		var ProductDetails = {
-			"product_id" 	: $scope.product_id,
-			"product_name" 	: $scope.product_name,
-			"product_desc" 	: $scope.product_desc,
+			"product_id" : $scope.product_id,
+			"product_name" : $scope.product_name,
+			"product_desc" : $scope.product_desc,
 			"product_price" : $scope.product_price,
-			"tot_product" 	: $scope.tot_product
+			"tot_product" : $scope.tot_product
 		}
 		console.log(ProductDetails);
 		$http({
@@ -306,15 +306,15 @@ app.controller('register', function($scope, $http) {
 			}
 		})
 	}
-	
+
 	$scope.updateProfile = function() {
 		var ProfileDetails = {
-			"first_name" 	: $scope.first_name,
-			"last_name" 	: $scope.last_name,
-			"bday" 			: $scope.bday,
-			"euname" 		: $scope.euname,
-			"cinfo" 		: $scope.cinfo,
-			"location" 		: $scope.location
+			"first_name" : $scope.first_name,
+			"last_name" : $scope.last_name,
+			"bday" : $scope.bday,
+			"euname" : $scope.euname,
+			"cinfo" : $scope.cinfo,
+			"location" : $scope.location
 		}
 		console.log(ProfileDetails);
 		$http({

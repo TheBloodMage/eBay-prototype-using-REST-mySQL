@@ -20,6 +20,8 @@ function signin(req, res) {
 
 function afterSignIn(req, res) {
 
+	var dt = new Date();
+
 	var getUser = "select password from users where username='"
 			+ req.param("inputUsername") + "'";
 
@@ -60,6 +62,36 @@ function afterSignIn(req, res) {
 			}
 		}
 	}, getUser);
+	
+	var updateLastLoginTime = "update test.users set logintime = currentlogintime, currentlogintime ='"
+		+ dt + "' where username = '" + req.param("inputUsername") + "'";
+	
+	console.log("The Query to get updateLastLoginTime:" + updateLastLoginTime);
+
+	mysql.fetchData(function(err, results) {
+		console.log("fetching data from SQL");
+
+		if (err) {
+			throw err;
+		} else {
+			if (results.length > 0) {
+				console.log("time updated");
+				json_responses = {
+					"statusCode" : 200
+				};
+				res.send(json_responses);
+
+			} else {
+
+				json_responses = {
+					"statusCode" : 401
+				};
+				console.log("Invalid Login");
+				res.send(json_responses);
+
+			}
+		}
+	}, updateLastLoginTime);
 }
 
 function registerNewUser(req, res) {
@@ -68,15 +100,17 @@ function registerNewUser(req, res) {
 	saltRounds = 10;
 	const
 	myPlaintextPassword = req.param("inputPassword");
+	var dt = new Date();
 
 	var salt = bcrypt.genSaltSync(saltRounds);
 	var hash = bcrypt.hashSync(myPlaintextPassword, salt);
 
 	var insertUser = "INSERT INTO users VALUES ('" + req.param("inputUsername")
 			+ "','" + hash + "','" + req.param("first_name") + "','"
-			+ req.param("last_name") + "')";
+			+ req.param("last_name") + "','" + dt + "','" + dt + "')";
 
 	console.log("QUERY to register NewUser is:" + insertUser);
+	console.log(dt);
 
 	mysql.fetchData(function(err, results) {
 
