@@ -6,7 +6,9 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "ejs": "*",
     "express": "3.4.8",
-    "ejs": "*"
+    "node-inspector": "^0.12.8",
+    "winston": "^2.2.0"
   }
 }

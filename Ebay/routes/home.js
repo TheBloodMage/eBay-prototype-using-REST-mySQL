@@ -72,9 +72,11 @@ function afterSignIn(req, res) {
 		console.log("fetching data from SQL");
 
 		if (err) {
+			console.log("fetching one");
 			throw err;
 		} else {
 			if (results.length > 0) {
+				console.log("fetching teo");
 				console.log("time updated");
 				json_responses = {
 					"statusCode" : 200

@@ -5,6 +5,25 @@ var http = require('http');
 var path = require('path');
 var home = require('./routes/home');
 var session = require('client-sessions');
+const winston = require('winston');
+const fs = require('fs');
+const env = process.env.NODE_ENV || 'development';
+const logDir = 'log';
+
+
+const tsFormat = (new Date()).toLocaleTimeString();
+const logger = new (winston.Logger)({
+  transports: [
+    new (winston.transports.File)({
+      filename: 'log/results.log',
+      timestamp: tsFormat,
+      level: env === 'development' ? 'debug' : 'info'
+    })
+  ]
+});
+logger.info('Hello world');
+logger.warn('Warning message');
+logger.debug('Debugging info');
 
 const
 saltRounds = 10;
