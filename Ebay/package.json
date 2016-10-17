@@ -6,9 +6,12 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "chai": "^3.5.0",
     "ejs": "*",
     "express": "3.4.8",
+    "mocha": "^3.1.2",
     "node-inspector": "^0.12.8",
+    "require": "^2.4.20",
     "winston": "^2.2.0"
   }
 }
